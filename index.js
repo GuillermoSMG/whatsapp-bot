@@ -8,11 +8,11 @@ const client = new Client({
   authStrategy: new LocalAuth(),
 });
 
-client.on('qr', qr => {
+client.on(Events.QR_RECEIVED, qr => {
   qrcode.generate(qr, { small: true });
 });
 
-client.on('ready', () => {
+client.on(Events.READY, () => {
   console.log('Client is ready!');
 });
 

@@ -1,4 +1,4 @@
-const { RAPID_API_TRANSLATE_KEY, WEATHER_API_KEY } = require('./config');
+const { RAPID_API_KEY, WEATHER_API_KEY } = require('./config');
 const { INFORMATION } = require('./const');
 const { URLS } = require('./urls');
 const { validLang, getParams } = require('./utils');
@@ -25,7 +25,7 @@ const getInfo = msg => {
 };
 
 const getGithub = async msg => {
-  const [, user] = getParams(msg);
+  const [, user] = getParams(msg.body);
   try {
     const dataGh = await fetch(`${URLS.GITHUB}/${user}`);
     const dataGhJson = await dataGh.json();
@@ -46,14 +46,14 @@ const getTranslation = async msg => {
   const url = URLS.TRANSLATION;
   const quotedMsg = (await msg.getQuotedMessage()) ?? '';
   console.log(quotedMsg.body);
-  const [, lang] = getParams(msg);
+  const [, lang] = getParams(msg.body);
   const validated = validLang(lang);
   const options = {
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
       'Accept-Encoding': 'application/gzip',
-      'X-RapidAPI-Key': RAPID_API_TRANSLATE_KEY,
+      'X-RapidAPI-Key': RAPID_API_KEY,
       'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com',
     },
     body: new URLSearchParams({
@@ -68,7 +68,6 @@ const getTranslation = async msg => {
       const response = await fetch(url, options);
       const result = await response.json();
       msg.reply(`Translation: ${result.data?.translations[0]?.translatedText}`);
-      console.log(result);
     } catch (error) {
       msg.reply('Ocurrió un error');
       console.error(error);
@@ -80,7 +79,7 @@ const getTranslation = async msg => {
 
 const getWeather = async msg => {
   // Get message body part by part. Ex: !wet New York -> ['!wet', 'New', 'York']
-  const [...city] = getParams(msg);
+  const [...city] = getParams(msg.body);
   // Delete first index -> ['New', 'York']
   city.shift();
   // Transform to string ->  'New York'
@@ -101,10 +100,75 @@ ${dataWJson.weather[0].description}`);
   }
 };
 
+const getGoogle = async msg => {
+  const [, ...params] = getParams(msg.body);
+  const searchTerm = params.join(' ');
+
+  const url = `${URLS.GOOGLE}/?query=${searchTerm}&limit=5&related_keywords=true`;
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': RAPID_API_KEY,
+      'X-RapidAPI-Host': 'google-search74.p.rapidapi.com',
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const result = await response.json();
+    const resMsg = result.results.map(r => {
+      const newMsg = `${r.title}
+${r.url}`;
+      return newMsg;
+    });
+    msg.reply(`${resMsg[0]}\n
+${resMsg[1]}\n
+${resMsg[2]}\n
+${resMsg[3]}\n
+${resMsg[4]}`);
+  } catch (error) {
+    console.error(error);
+    msg.reply('Ocurrió un error');
+  }
+};
+
+const getSummarize = async msg => {
+  const [, ...params] = getParams(msg.body);
+  const text = params.join(' ');
+  const url = URLS.SUMMARIZE;
+  const options = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'X-RapidAPI-Key': RAPID_API_KEY,
+      'X-RapidAPI-Host': 'text-summarize-pro.p.rapidapi.com',
+    },
+    body: new URLSearchParams({
+      text,
+      percentage: '15',
+    }),
+  };
+
+  if (!text) {
+    msg.reply('Debes ingresar un texto válido.');
+  } else {
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json();
+      msg.reply(`Text summary:\n${result.summary}`);
+    } catch (error) {
+      console.error(error);
+      msg.reply('Ocurrió un error.');
+    }
+  }
+};
+
 module.exports = {
   generateSticker,
   getInfo,
   getGithub,
   getTranslation,
   getWeather,
+  getGoogle,
+  getSummarize,
 };
