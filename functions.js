@@ -93,7 +93,6 @@ const getWeather = async msg => {
     msg.reply(`${dataWJson.name}, ${dataWJson.sys.country}
 ${Math.round(dataWJson.main.temp)}°C
 ${dataWJson.weather[0].description}`);
-    console.log(dataWJson);
   } catch (error) {
     console.log(error);
     msg.reply('Ingrese una ciudad válida.');
