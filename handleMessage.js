@@ -8,6 +8,7 @@ const {
   getWeather,
   getGoogle,
   getSummarize,
+  getSummarizeUrl,
 } = require('./functions');
 
 const handleMessage = async (command, msg) => {
@@ -47,6 +48,11 @@ const handleMessage = async (command, msg) => {
   if (command === COMMANDS.SUMMARIZE.command) {
     msg.react(COMMANDS.SUMMARIZE.reaction);
     await getSummarize(msg);
+  }
+
+  if(command === COMMANDS.SUMMARIZEURL.command){
+    msg.react(COMMANDS.SUMMARIZEURL.reaction);
+    await getSummarizeUrl(msg);
   }
 };
 

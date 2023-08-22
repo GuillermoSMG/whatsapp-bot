@@ -7,7 +7,16 @@ const COMMANDS = {
   WEATHER: { command: '!wet', reaction: '🌦️' },
   GOOGLE: { command: '!search', reaction: '🔍' },
   SUMMARIZE: { command: '!sumz', reaction: '📑' },
+  SUMMARIZEURL: { command: '!sumzU', reaction: '📑' },
 };
+
+/* 
+${COMMANDS.TRANSLATOR.reaction} ${COMMANDS.TRANSLATOR.command}
+Reply to a message to be translated and add the target language.
+Ex: !translate Hello es
+!translate Hola en
+Options: es, en.
+ */
 
 const INFORMATION = {
   title: '🛠️ Commands list.\n',
@@ -17,12 +26,6 @@ Reply an image with !sticker to get the image sticker.
 ${COMMANDS.GITHUB.reaction} ${COMMANDS.GITHUB.command}
 Get a Github user info.
 Ex: !gh JonDoe
-
-${COMMANDS.TRANSLATOR.reaction} ${COMMANDS.TRANSLATOR.command}
-Reply to a message to be translated and add the target language.
-Ex: !translate Hello es
-!translate Hola en
-Options: es, en.
 
 ${COMMANDS.WEATHER.reaction} ${COMMANDS.WEATHER.command}
 Get information about a city weather at this moment.

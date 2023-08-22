@@ -134,7 +134,7 @@ ${resMsg[4]}`);
 const getSummarize = async msg => {
   const [, ...params] = getParams(msg.body);
   const text = params.join(' ');
-  const url = URLS.SUMMARIZE;
+  const url = `${URLS.SUMMARIZE}Text`
   const options = {
     method: 'POST',
     headers: {
@@ -162,6 +162,39 @@ const getSummarize = async msg => {
   }
 };
 
+const getSummarizeUrl = async msg => {
+  const [, params] = getParams(msg.body);
+  const sendedUrl = params;
+  const url = `${URLS.SUMMARIZE}Url`
+  const encodedParams = new URLSearchParams();
+  encodedParams.set('url', sendedUrl);
+  encodedParams.set('percentage', '10');
+
+  const options = {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'X-RapidAPI-Key': RAPID_API_KEY,
+      'X-RapidAPI-Host': 'text-summarize-pro.p.rapidapi.com'
+    },
+    body: encodedParams
+  };
+
+
+  if (!sendedUrl) {
+    msg.reply('Debes ingresar un URL válido.');
+  } else {
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json();
+      msg.reply(`URL summary:\n${result.summary}`);
+    } catch (error) {
+      console.error(error);
+      msg.reply('Ocurrió un error.');
+    }
+  }
+};
+
 module.exports = {
   generateSticker,
   getInfo,
@@ -170,4 +203,5 @@ module.exports = {
   getWeather,
   getGoogle,
   getSummarize,
+  getSummarizeUrl,
 };
