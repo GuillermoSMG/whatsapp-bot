@@ -1,15 +1,16 @@
-const { MessageTypes } = require('whatsapp-web.js');
-const { COMMANDS } = require('./const');
+const { MessageTypes } = require("whatsapp-web.js");
+const { COMMANDS } = require("./const");
 const {
   generateSticker,
   getInfo,
   getGithub,
-  getTranslation,
   getWeather,
   getGoogle,
   getSummarize,
   getSummarizeUrl,
-} = require('./functions');
+  getDice,
+  getCoin,
+} = require("./functions");
 
 const handleMessage = async (command, msg) => {
   if (
@@ -30,10 +31,10 @@ const handleMessage = async (command, msg) => {
     await getGithub(msg);
   }
 
-  if (command === COMMANDS.TRANSLATOR.command) {
+  /* if (command === COMMANDS.TRANSLATOR.command) {
     msg.react(COMMANDS.TRANSLATOR.reaction);
     await getTranslation(msg);
-  }
+  } */
 
   if (command === COMMANDS.WEATHER.command) {
     msg.react(COMMANDS.WEATHER.reaction);
@@ -50,9 +51,19 @@ const handleMessage = async (command, msg) => {
     await getSummarize(msg);
   }
 
-  if(command === COMMANDS.SUMMARIZEURL.command){
+  if (command === COMMANDS.SUMMARIZEURL.command) {
     msg.react(COMMANDS.SUMMARIZEURL.reaction);
     await getSummarizeUrl(msg);
+  }
+
+  if (command === COMMANDS.DICE.command) {
+    msg.react(COMMANDS.DICE.reaction);
+    await getDice(msg);
+  }
+
+  if (command === COMMANDS.COIN.command) {
+    msg.react(COMMANDS.COIN.reaction);
+    await getCoin(msg);
   }
 };
 
