@@ -3,7 +3,7 @@ const path = require("node:path");
 const { URLS } = require("./urls");
 
 const getCot = async () => {
-  const pathJson = path.join(__dirname, "products.json");
+  const pathJson = path.join(__dirname, "cotizacion.json");
   const oldCot = await fs.readFile(pathJson, "utf-8");
   const oldCotParse = JSON.parse(oldCot);
   const oldDate = new Date(oldCotParse.LastDate);
@@ -26,7 +26,7 @@ const getCot = async () => {
       LastDate,
     };
     await fs.writeFile(
-      "products.json",
+      "cotizacion.json",
       JSON.stringify(cotizacionJson, null, 2)
     );
     return cotizacion;
