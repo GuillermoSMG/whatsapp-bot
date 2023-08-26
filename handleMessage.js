@@ -10,6 +10,9 @@ const {
   getSummarizeUrl,
   getDice,
   getCoin,
+  getEval,
+  getYoutube,
+  getCotizacion,
 } = require("./functions");
 
 const handleMessage = async (command, msg) => {
@@ -64,6 +67,26 @@ const handleMessage = async (command, msg) => {
   if (command === COMMANDS.COIN.command) {
     msg.react(COMMANDS.COIN.reaction);
     await getCoin(msg);
+  }
+
+  if (
+    command === COMMANDS.OPERATION.ADDITION.command ||
+    command === COMMANDS.OPERATION.SUBSTRACTION.command ||
+    command === COMMANDS.OPERATION.MULTIPLICATION.command ||
+    command === COMMANDS.OPERATION.DIVISION.command
+  ) {
+    msg.react(COMMANDS.OPERATION.reaction);
+    await getEval(msg);
+  }
+
+  if (command === COMMANDS.YOUTUBE.command) {
+    msg.react(COMMANDS.YOUTUBE.reaction);
+    await getYoutube(msg);
+  }
+
+  if (command === COMMANDS.COTIZACION.command) {
+    msg.react(COMMANDS.COTIZACION.reaction);
+    await getCotizacion(msg);
   }
 };
 

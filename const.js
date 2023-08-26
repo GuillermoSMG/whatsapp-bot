@@ -10,7 +10,15 @@ const COMMANDS = {
   SUMMARIZEURL: { command: "!sumzUrl", reaction: "📑" },
   DICE: { command: "!dice", reaction: "🎲" },
   COIN: { command: "!coin", reaction: "🪙" },
-  EVAL: { command: "!eval", reaction: "🧮" },
+  OPERATION: {
+    ADDITION: { command: "!add" },
+    SUBSTRACTION: { command: "!subs" },
+    MULTIPLICATION: { command: "!mult" },
+    DIVISION: { command: "!div" },
+    reaction: "🧮",
+  },
+  YOUTUBE: { command: "!yt", reaction: "📽️" },
+  COTIZACION: { command: "!price", reaction: "💰" },
 };
 
 /* 
@@ -22,35 +30,48 @@ Options: es, en.
  */
 
 const INFORMATION = {
-  title: "🛠️ Commands list.\n",
+  title: "🛠️ Lista de comandos.\n",
   body: `${COMMANDS.STICKER.reaction} ${COMMANDS.STICKER.command}
-Reply an image with !sticker to get the image sticker.
+Contesta a una imagen con !sticker para convertirla a sticker.
   
+${COMMANDS.COTIZACION.reaction} ${COMMANDS.COTIZACION.command}
+Obten la cotización del Dólar, Euro, Real y Peso Argetino.
+
 ${COMMANDS.GITHUB.reaction} ${COMMANDS.GITHUB.command}
-Get a Github user info.
-Ex: !gh JonDoe
+Obten el perfil de Github de un usuario.
+Ej: !gh JonDoe.
 
 ${COMMANDS.WEATHER.reaction} ${COMMANDS.WEATHER.command}
-Get information about a city weather at this moment.
-Ex: !wet New York
+Obten información del tiempo atmosférico de una ciudad.
+Ej: !wet New York.
 
 ${COMMANDS.GOOGLE.reaction} ${COMMANDS.GOOGLE.command}
-Make a Google search.
-Ex: !search whats nodejs
+Realiza una busqueda en Google.
+Ej: !search que es nodejs.
+
+${COMMANDS.YOUTUBE.reaction} ${COMMANDS.YOUTUBE.command}
+Realiza una busqueda en Youtube.
+Ej: !yt calculadora con javascript.
 
 ${COMMANDS.SUMMARIZE.reaction} ${COMMANDS.SUMMARIZE.command} or ${COMMANDS.SUMMARIZEURL.command}
-Enter a long text or an URL and get a summarized version.
-Ex: !sumz long text here
-!sumzUrl URL here
+Ingresa un texto largo o URL y obten un resúmen.
+Ej: !sumz texto largo aquí.
+!sumzUrl URL aquí.
 
 ${COMMANDS.DICE.reaction} ${COMMANDS.DICE.command}
-Roll a dice
+Tira un dado.
 
 ${COMMANDS.COIN.reaction} ${COMMANDS.COIN.command}
-Flip a coin
+Tira una moneda.
+
+${COMMANDS.OPERATION.reaction} CALCULADORA
+!add: ingresa 2 o más números para ser sumados.
+!subs: ingresa 2 o más números para ser restados.
+!mult: ingresa 2 o más números para ser multiplicados.
+!div: ingresa 2 o más números para ser divididos.
 
 ${COMMANDS.INFO.reaction} ${COMMANDS.INFO.command}
-Get a list of commands and description of each one.`,
+Obten la lista de comandos y una descripción de los mismos.`,
 };
 
 module.exports = { COMMANDS, INFORMATION };

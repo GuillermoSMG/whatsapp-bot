@@ -1,5 +1,6 @@
 const { RAPID_API_KEY, WEATHER_API_KEY } = require("./config");
-const { INFORMATION } = require("./const");
+const { INFORMATION, COMMANDS } = require("./const");
+const { getCot } = require("./cotizacion");
 const { URLS } = require("./urls");
 const { validLang, getParams, URL_REGEX } = require("./utils");
 
@@ -144,7 +145,7 @@ const getSummarize = async msg => {
     },
     body: new URLSearchParams({
       text,
-      percentage: "15",
+      percentage: "50",
     }),
   };
 
@@ -169,7 +170,7 @@ const getSummarizeUrl = async msg => {
   if (sendedUrl.match(URL_REGEX)) return;
   const encodedParams = new URLSearchParams();
   encodedParams.set("url", sendedUrl);
-  encodedParams.set("percentage", "10");
+  encodedParams.set("percentage", "50");
 
   const options = {
     method: "POST",
@@ -209,6 +210,92 @@ const getCoin = async msg => {
   }
 };
 
+const getEval = async msg => {
+  const [op, ...params] = getParams(msg.body);
+  const strToNum = params.map(n => Number(n));
+  let result = 0;
+  if (op === COMMANDS.OPERATION.ADDITION.command) {
+    result = strToNum.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+  }
+  if (op === COMMANDS.OPERATION.SUBSTRACTION.command) {
+    result = strToNum.reduce(
+      (accumulator, currentValue) => accumulator - currentValue,
+      0
+    );
+  }
+  if (op === COMMANDS.OPERATION.DIVISION.command) {
+    result = strToNum.reduce(
+      (accumulator, currentValue) => accumulator / currentValue,
+      strToNum[0] * strToNum[0]
+    );
+  }
+  if (op === COMMANDS.OPERATION.MULTIPLICATION.command) {
+    result = strToNum.reduce(
+      (accumulator, currentValue) => accumulator * currentValue,
+      1
+    );
+  }
+  if (isNaN(result)) {
+    msg.reply("Debes ingresar dos números.");
+  } else {
+    msg.reply(`Result: ${result}`);
+  }
+};
+
+const getYoutube = async msg => {
+  const [, ...params] = getParams(msg.body);
+  const searchTerm = params.join(" ");
+
+  const url = `${URLS.YOUTUBE}/search?part=snippet&q=${searchTerm}`;
+
+  const options = {
+    method: "GET",
+    params: {
+      maxResults: "5",
+    },
+    headers: {
+      "X-RapidAPI-Key": RAPID_API_KEY,
+      "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const result = await response.json();
+    const resMsg = result.items.map(item => {
+      const newMsg = `${item.snippet.title}
+https://www.youtube.com/watch?v=${item.id.videoId}`;
+      return newMsg;
+    });
+    msg.reply(`${resMsg[0]}\n
+${resMsg[1]}\n
+${resMsg[2]}\n
+${resMsg[3]}\n
+${resMsg[4]}`);
+  } catch (error) {
+    console.error(error);
+    msg.reply("Ocurrió un error");
+  }
+};
+
+const getCotizacion = async msg => {
+  const data = await getCot();
+  const dataArray = data
+    .replaceAll("�", "ó")
+    .replaceAll(". ", ".  UYU$")
+    .split(";");
+  const dataMsg = `${dataArray[0]}\n
+${dataArray[1].trim()}\n
+${dataArray[2].trim()}\n
+${dataArray[3].trim()}\n
+${dataArray[4].trim()}\n
+${dataArray[5].trim()}`;
+  msg.reply(dataMsg);
+};
+
 module.exports = {
   generateSticker,
   getInfo,
@@ -220,4 +307,7 @@ module.exports = {
   getSummarizeUrl,
   getDice,
   getCoin,
+  getEval,
+  getYoutube,
+  getCotizacion,
 };
