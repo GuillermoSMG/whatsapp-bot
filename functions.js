@@ -287,7 +287,7 @@ const getCotizacion = async msg => {
     .replaceAll("�", "ó")
     .replaceAll(". ", ".  UYU$")
     .split(";");
-  const dataMsg = `${dataArray[0]}\n
+  const dataMsg = `${dataArray[0]} (Compra)\n
 ${dataArray[1].trim()}\n
 ${dataArray[2].trim()}\n
 ${dataArray[3].trim()}\n
