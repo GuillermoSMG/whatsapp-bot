@@ -9,7 +9,7 @@ Agregar el archivo `.env` con las keys mencionadas en `.env.example`.
 
 Correr el código con `npm run dev`.
 
-Linkear whatsapp desde el celular escaneando el código QR desde la aplicación (Whatsapp).
+Linkear whatsapp desde el celular escaneando el código QR (que saldrá por consola) desde la aplicación (Whatsapp).
 
 Cuando el bot esté listo por consola saldrá el mensaje `Client is ready!`.
 
