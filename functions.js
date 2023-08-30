@@ -1,5 +1,5 @@
 const { RAPID_API_KEY, WEATHER_API_KEY } = require("./config");
-const { INFORMATION, COMMANDS } = require("./const");
+const { INFORMATION, COMMANDS, STICKER_INFO } = require("./const");
 const { getCot } = require("./cotizacion");
 const { URLS } = require("./urls");
 const { validLang, getParams, URL_REGEX } = require("./utils");
@@ -11,9 +11,9 @@ const generateSticker = async msg => {
     const mediaObj = await quotedMsg.downloadMedia();
     quotedMsg.reply(mediaObj, undefined, {
       sendMediaAsSticker: true,
-      stickerAuthor: "By GSM",
-      stickerName: "Sticker",
-      stickerCategories: ["St"],
+      stickerAuthor: STICKER_INFO.AUTHOR,
+      stickerName: STICKER_INFO.NAME,
+      stickerCategories: [STICKER_INFO.CATEGORIES],
     });
   } catch (err) {
     quotedMsg.reply("Debes responder a una imagen.");
@@ -288,11 +288,11 @@ const getCotizacion = async msg => {
     .replaceAll(". ", ".  UYU$")
     .split(";");
   const dataMsg = `${dataArray[0]} (Compra)\n
-${dataArray[1].trim()}\n
-${dataArray[2].trim()}\n
-${dataArray[3].trim()}\n
-${dataArray[4].trim()}\n
-${dataArray[5].trim()}`;
+${dataArray[1]?.trim()}\n
+${dataArray[2]?.trim()}\n
+${dataArray[3]?.trim()}\n
+${dataArray[4]?.trim()}\n
+${dataArray[5]?.trim()}`;
   msg.reply(dataMsg);
 };
 

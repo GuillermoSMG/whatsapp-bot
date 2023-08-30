@@ -74,4 +74,10 @@ ${COMMANDS.INFO.reaction} ${COMMANDS.INFO.command}
 Obten la lista de comandos y una descripción de los mismos.`,
 };
 
-module.exports = { COMMANDS, INFORMATION };
+const STICKER_INFO = {
+  AUTHOR: "By GSM",
+  NAME: "Sticker",
+  CATEGORIES: "St",
+};
+
+module.exports = { COMMANDS, INFORMATION, STICKER_INFO };
