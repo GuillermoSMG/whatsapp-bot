@@ -30,13 +30,11 @@ const getGithub = async msg => {
   try {
     const dataGh = await fetch(`${URLS.GITHUB}/${user}`);
     const dataGhJson = await dataGh.json();
-    if (dataGhJson.message) {
-      msg.reply("Debe ingresar un usuario válido.");
-    } else {
-      msg.reply(`User: ${dataGhJson.login}
+    dataGhJson.message
+      ? msg.reply("Debe ingresar un usuario válido.")
+      : msg.reply(`User: ${dataGhJson.login}
   Profile: ${dataGhJson.html_url}
   Repos: ${dataGhJson.html_url}?tab=repositories`);
-    }
   } catch (err) {
     msg.reply("Ocurrió un error.");
     console.log(err);
@@ -203,11 +201,7 @@ const getDice = async msg => {
 
 const getCoin = async msg => {
   const coin = Math.floor(Math.random() * 100);
-  if (coin < 50) {
-    msg.reply("Coin: CARA");
-  } else {
-    msg.reply("Coin: CRUZ");
-  }
+  coin < 50 ? msg.reply("Coin: CARA") : msg.reply("Coin: CRUZ");
 };
 
 const getEval = async msg => {
@@ -238,11 +232,9 @@ const getEval = async msg => {
       1
     );
   }
-  if (isNaN(result)) {
-    msg.reply("Debes ingresar dos números.");
-  } else {
-    msg.reply(`Result: ${result}`);
-  }
+  isNaN(result)
+    ? msg.reply("Debes ingresar dos números.")
+    : msg.reply(`Result: ${result}`);
 };
 
 const getYoutube = async msg => {
